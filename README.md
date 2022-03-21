@@ -1,6 +1,5 @@
 === Vendus ===
 Contributors: vendus
-Donate link: https://www.vendus.pt/
 Tags: invoicing, orders, billing, invoice
 Tested up to: 6.0
 Requires at least: 4.5
