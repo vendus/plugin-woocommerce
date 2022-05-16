@@ -224,7 +224,11 @@ class VP
                 $items = array();
                 foreach($order['line_items'] as $item) {
                     $product = wc_get_product($item->get_product_id());
-                    $items[] = array_merge($item->get_data(), array('sku' => $product->get_sku()));
+                    $items[] = array_merge(
+                        $item->get_data(), 
+                        ['sku' => $product->get_sku()],
+                        ['invoice_description' => $product->get_attribute('invoice_description')]
+                    );
                 }
                 $order['line_items'] = $items;
                 
