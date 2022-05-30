@@ -1,24 +1,24 @@
 <?php
 
-class VP_Utils
+class Vendus_Plugin_Utils
 {
     static public function getImage($filename) {
-        return VP_URL . 'assets/images/' . $filename;
+        return VENDUS_PLUGIN_URL . 'assets/images/' . $filename;
     }
     static public function getCss($filename) {
-        return VP_URL . 'assets/css/' . $filename;
+        return VENDUS_PLUGIN_URL . 'assets/css/' . $filename;
     }
     static public function getJs($filename) {
-        return VP_URL . 'assets/js/' . $filename;
+        return VENDUS_PLUGIN_URL . 'assets/js/' . $filename;
     }
 
     static public function render($view, $params = array())
     {
         extract($params);
-        include(VP_VIEW_PATH . $view);
+        include(VENDUS_PLUGIN_VIEW_PATH . $view);
     }
 
     static public function notify($msg, $type='warning') {
-        echo '<div class="notice notice-'.$type.' is-dismissible"><p>'.$msg.'</p></div>';
+        echo '<div class="notice notice-'.esc_attr($type).' is-dismissible"><p>'.esc_html($msg).'</p></div>';
     }
 }

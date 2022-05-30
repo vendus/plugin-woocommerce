@@ -1,6 +1,6 @@
 <?php
 
-class VP_Clients
+class Vendus_Plugin_Clients
 {
     public function __construct()
     {
@@ -21,8 +21,8 @@ class VP_Clients
 
     static public function addFieldBilling()
     {
-        add_filter( 'woocommerce_billing_fields', 'vp_woo_nif_billing_fields', 10, 2 );
-        function vp_woo_nif_billing_fields( $fields, $country ) {
+        add_filter( 'woocommerce_billing_fields', 'vendus_plugin_woo_nif_billing_fields', 10, 2 );
+        function vendus_plugin_woo_nif_billing_fields( $fields, $country ) {
             $fields['billing_nif'] = array(
                 'type'			=>	'text',
                 'label'			=> apply_filters( 'woocommerce_nif_field_label', 'NIF / NIPC' ),
@@ -60,8 +60,8 @@ class VP_Clients
 
     static public function addFieldOrderAdminPanel()
     {
-        add_filter( 'woocommerce_admin_billing_fields', 'vp_woo_nif_admin_billing_fields' );
-        function vp_woo_nif_admin_billing_fields( $billing_fields ) {
+        add_filter( 'woocommerce_admin_billing_fields', 'vendus_plugin_woo_nif_admin_billing_fields' );
+        function vendus_plugin_woo_nif_admin_billing_fields( $billing_fields ) {
             global $post;
             if ( $post->post_type == 'shop_order' || $post->post_type == 'shop_subscription' ) {
                 $order = new WC_Order( $post->ID );
@@ -80,17 +80,17 @@ class VP_Clients
 
     static public function addJs()
     {
-        add_action( 'admin_init', 'vp_woo_nif_admin_init_found_customer_details' );
-        function vp_woo_nif_admin_init_found_customer_details() {
+        add_action( 'admin_init', 'vendus_plugin_woo_nif_admin_init_found_customer_details' );
+        function vendus_plugin_woo_nif_admin_init_found_customer_details() {
             if ( version_compare( WC_VERSION, '3.0', '>=' ) ) {
-                add_filter( 'woocommerce_ajax_get_customer_details', 'vp_woo_nif_ajax_get_customer_details', 10, 3 );
+                add_filter( 'woocommerce_ajax_get_customer_details', 'vendus_plugin_woo_nif_ajax_get_customer_details', 10, 3 );
             } else {
-                add_filter( 'woocommerce_found_customer_details', 'vp_woo_nif_found_customer_details_old', 10, 3 );
+                add_filter( 'woocommerce_found_customer_details', 'vendus_plugin_woo_nif_found_customer_details_old', 10, 3 );
             }
         }
 
         //Pre 3.0
-        function vp_woo_nif_found_customer_details_old( $customer_data, $user_id, $type_to_load ) {
+        function vendus_plugin_woo_nif_found_customer_details_old( $customer_data, $user_id, $type_to_load ) {
             if ( $type_to_load == 'billing' ) {
                 if ( ( isset( $customer_data['billing_country'] ) && $customer_data['billing_country'] == 'PT' ) || apply_filters( 'woocommerce_nif_show_all_countries', false ) ) {
                     $customer_data['billing_nif'] = get_user_meta( $user_id, $type_to_load . '_nif', true );
@@ -100,7 +100,7 @@ class VP_Clients
         }
 
         //3.0 and above - See https://github.com/woocommerce/woocommerce/issues/12654
-        function vp_woo_nif_ajax_get_customer_details( $customer_data, $customer, $user_id ) {
+        function vendus_plugin_woo_nif_ajax_get_customer_details( $customer_data, $customer, $user_id ) {
             if ( ( isset( $customer_data['billing']['country']) && $customer_data['billing']['country'] == 'PT' ) || apply_filters( 'woocommerce_nif_show_all_countries', false ) ) {
                 $customer_data['billing']['nif'] = $customer->get_meta( 'billing_nif' );
             }
@@ -110,8 +110,8 @@ class VP_Clients
 
     static public function addFieldUserEdit()
     {
-        add_action( 'woocommerce_customer_meta_fields', 'vp_woo_nif_customer_meta_fields' );
-        function vp_woo_nif_customer_meta_fields( $show_fields ) {
+        add_action( 'woocommerce_customer_meta_fields', 'vendus_plugin_woo_nif_customer_meta_fields' );
+        function vendus_plugin_woo_nif_customer_meta_fields( $show_fields ) {
             if ( isset( $show_fields['billing'] ) && is_array( $show_fields['billing']['fields'] ) ) {
                 $show_fields['billing']['fields']['billing_nif'] = array(
                     'label' => apply_filters( 'woocommerce_nif_field_label', 'NIF / NIPC' ),
@@ -124,8 +124,8 @@ class VP_Clients
 
     static public function addFieldPageFinishShop()
     {
-        add_action( 'woocommerce_order_details_after_customer_details', 'vp_woo_nif_order_details_after_customer_details' );
-        function vp_woo_nif_order_details_after_customer_details( $order ) {
+        add_action( 'woocommerce_order_details_after_customer_details', 'vendus_plugin_woo_nif_order_details_after_customer_details' );
+        function vendus_plugin_woo_nif_order_details_after_customer_details( $order ) {
             $billing_country = version_compare( WC_VERSION, '3.0', '>=' ) ? $order->get_billing_country() : $order->billing_country;
             $billing_nif = version_compare( WC_VERSION, '3.0', '>=' ) ? $order->get_meta( '_billing_nif' ) : $order->billing_nif;
             if ( ( $billing_country == 'PT' || apply_filters( 'woocommerce_nif_show_all_countries', false ) ) && $billing_nif ) {
@@ -141,8 +141,8 @@ class VP_Clients
 
     static public function addFieldEmails()
     {
-        add_filter( 'woocommerce_email_customer_details_fields', 'vp_woo_nif_email_customer_details_fields', 10, 3 );
-        function vp_woo_nif_email_customer_details_fields( $fields, $sent_to_admin, $order ) {
+        add_filter( 'woocommerce_email_customer_details_fields', 'vendus_plugin_woo_nif_email_customer_details_fields', 10, 3 );
+        function vendus_plugin_woo_nif_email_customer_details_fields( $fields, $sent_to_admin, $order ) {
             $billing_nif = version_compare( WC_VERSION, '3.0', '>=' ) ? $order->get_meta( '_billing_nif' ) : $order->billing_nif;
             if ( $billing_nif ) {
                 $fields['billing_nif'] = array(
@@ -156,8 +156,8 @@ class VP_Clients
 
     static public function addFieldRestApi()
     {
-        add_filter( 'woocommerce_api_order_response', 'vp_woo_nif_woocommerce_api_order_response', 11, 2 ); //After WooCommerce own add_customer_data
-        function vp_woo_nif_woocommerce_api_order_response( $order_data, $order ) {
+        add_filter( 'woocommerce_api_order_response', 'vendus_plugin_woo_nif_woocommerce_api_order_response', 11, 2 ); //After WooCommerce own add_customer_data
+        function vendus_plugin_woo_nif_woocommerce_api_order_response( $order_data, $order ) {
             //Order
             if ( isset( $order_data['billing_address'] ) ) {
                 $billing_nif = version_compare( WC_VERSION, '3.0', '>=' ) ? $order->get_meta( '_billing_nif' ) : $order->billing_nif;
@@ -166,8 +166,8 @@ class VP_Clients
             return $order_data;
         }
 
-        add_filter( 'woocommerce_api_customer_response', 'vp_woo_nif_woocommerce_api_customer_response', 10, 2 );
-        function vp_woo_nif_woocommerce_api_customer_response( $customer_data, $customer ) {
+        add_filter( 'woocommerce_api_customer_response', 'vendus_plugin_woo_nif_woocommerce_api_customer_response', 10, 2 );
+        function vendus_plugin_woo_nif_woocommerce_api_customer_response( $customer_data, $customer ) {
             //Customer
             if ( isset( $customer_data['billing_address'] ) ) {
                 $billing_nif = version_compare( WC_VERSION, '3.0', '>=' ) ? $customer->get_meta( 'billing_nif' ) : get_user_meta( $customer->get_id(), 'billing_nif', true );
@@ -180,14 +180,14 @@ class VP_Clients
     static public function validations()
     {
         // checkout
-        add_action( 'woocommerce_checkout_process', 'vp_woo_nif_checkout_process' );
-        function vp_woo_nif_checkout_process() {
+        add_action( 'woocommerce_checkout_process', 'vendus_plugin_woo_nif_checkout_process' );
+        function vendus_plugin_woo_nif_checkout_process() {
             if ( apply_filters( 'woocommerce_nif_field_validate', false ) ) {
                 $customer_country = version_compare( WC_VERSION, '3.0', '>=' ) ? WC()->customer->get_billing_country() : WC()->customer->get_country();
                 $countries = new WC_Countries();
                 if ( $customer_country == 'PT' || ( $customer_country == '' && $countries->get_base_country() == 'PT' ) ) {
                     $billing_nif = wc_clean( isset( $_POST['billing_nif'] ) ? $_POST['billing_nif'] : '' );
-                    if ( vp_woo_valida_nif( $billing_nif, true ) || ( trim( $billing_nif ) == '' &&  !apply_filters( 'woocommerce_nif_field_required', false ) ) ) { //If the field is NOT required and it's empty, we shouldn't validate it
+                    if ( vendus_plugin_woo_valida_nif( $billing_nif, true ) || ( trim( $billing_nif ) == '' &&  !apply_filters( 'woocommerce_nif_field_required', false ) ) ) { //If the field is NOT required and it's empty, we shouldn't validate it
                         //OK
                     } else {
                         wc_add_notice(
@@ -204,14 +204,14 @@ class VP_Clients
         }
 
         // save address
-        add_action( 'woocommerce_after_save_address_validation', 'vp_woo_nif_after_save_address_validation', 10, 3 );
-        function vp_woo_nif_after_save_address_validation( $user_id, $load_address, $address ) {
+        add_action( 'woocommerce_after_save_address_validation', 'vendus_plugin_woo_nif_after_save_address_validation', 10, 3 );
+        function vendus_plugin_woo_nif_after_save_address_validation( $user_id, $load_address, $address ) {
             if ( $load_address == 'billing' ) {
                 if ( apply_filters( 'woocommerce_nif_field_validate', false ) ) {
                     $country = wc_clean( isset( $_POST['billing_country'] ) ? $_POST['billing_country'] : '' );
                     if ( $country == 'PT' ) {
                         $billing_nif = wc_clean( isset( $_POST['billing_nif'] ) ? $_POST['billing_nif'] : '' );
-                        if ( vp_woo_valida_nif( $billing_nif, true ) || ( trim( $billing_nif ) == '' &&  !apply_filters( 'woocommerce_nif_field_required', false ) ) ) { //If the field is NOT required and it's empty, we shouldn't validate it
+                        if ( vendus_plugin_woo_valida_nif( $billing_nif, true ) || ( trim( $billing_nif ) == '' &&  !apply_filters( 'woocommerce_nif_field_required', false ) ) ) { //If the field is NOT required and it's empty, we shouldn't validate it
                         //OK
                         } else {
                             wc_add_notice(
@@ -225,7 +225,7 @@ class VP_Clients
         }
 
         // nif
-        function vp_woo_valida_nif( $nif, $ignoreFirst = true ) {
+        function vendus_plugin_woo_valida_nif( $nif, $ignoreFirst = true ) {
             //Limpamos eventuais espaços a mais
             $nif = trim( $nif );
             //Verificamos se é numérico e tem comprimento 9

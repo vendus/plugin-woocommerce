@@ -1,6 +1,6 @@
 <?php
 
-class VP_Api
+class Vendus_Plugin_Api
 {
     public function __construct() {
 
@@ -10,10 +10,10 @@ class VP_Api
     {
         $params = array(
             'order'         => $order,
-            'register_id'   => get_option('vp_form_config_register'),
-            'exemption'     => get_option('vp_form_config_exemption'),
-            'exemption_law' => get_option('vp_form_config_exemption_law'),
-            'invoice_type'  => get_option('vp_form_config_invoice_type'),
+            'register_id'   => get_option('vendus_plugin_form_config_register'),
+            'exemption'     => get_option('vendus_plugin_form_config_exemption'),
+            'exemption_law' => get_option('vendus_plugin_form_config_exemption_law'),
+            'invoice_type'  => get_option('vendus_plugin_form_config_invoice_type'),
             'version'       => WC_VERSION
         );
         
@@ -55,25 +55,24 @@ class VP_Api
 
     static public function request($endpoint, $params)
     {
-        $apiKey = get_option('vp_config_api_key');
+        $apiKey = get_option('vendus_plugin_config_api_key');
         $url    = VENDUS_URL . $endpoint . '/?api_key=' . $apiKey;
         $params['api_key'] = $apiKey;
         
         $content = json_encode($params);
-        $curl    = curl_init($url);
-        //pr($content);exit;
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
-        curl_setopt($curl, CURLOPT_HTTPHEADER,
-            array(
+
+        $response = wp_remote_post($url, [
+            'method'   => 'POST',
+            'blocking' => true,
+            'headers'  => [
                 "Content-type: application/json",
-                "Content-Length: " . strlen($content),
-            )
-        );
-        $result = curl_exec($curl);
-        curl_close($curl);
-        
-        return json_decode($result, true);
+                "Content-Length: " . strlen($content)
+            ],
+            'body' => $content
+        ]);
+
+        $response = wp_remote_retrieve_body($response);
+
+        return json_decode($response, true);
     }
 }

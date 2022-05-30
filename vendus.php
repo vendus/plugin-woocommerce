@@ -8,20 +8,20 @@
 * Author URI: https://nex.pt/
 **/
 
-define('VP_PATH', plugin_dir_path(__FILE__));
-define('VP_DEV', false);
+define('VENDUS_PLUGIN_PATH', plugin_dir_path(__FILE__));
+define('VENDUS_PLUGIN_DEV', false);
 
-if (!class_exists('VP', false)) {
-	require_once VP_PATH . 'includes/class-vp.php';
+if (!class_exists('VENDUS_PLUGIN', false)) {
+	require_once VENDUS_PLUGIN_PATH . 'includes/class-vp.php';
 }
 
 function initVP() { 
-	return VP::instance();
+	return Vendus_Plugin::instance();
 }
 
-$GLOBALS['vp'] = initVP();
+$GLOBALS['VENDUS_PLUGIN_GLOBAL'] = initVP();
 
-if(VP_DEV) {
+if(VENDUS_PLUGIN_DEV) {
     function pr($arr) 
     {
         echo "<div style='background:#eee;border:1px solid #ccc;font-size:12px;padding:10px;margin-bottom:20px'>";
