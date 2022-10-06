@@ -9,26 +9,8 @@ class Vendus_Plugin_Orders
     }
 
     static public function getExemptions($exemption = '')
-    {
-        $list = array(
-            'M01' => 'Artigo 16.º, n.º 6 do CIVA ou similar',
-            'M02' => 'Artigo 6.º do Decreto-Lei n.º 198/90, de 19 de Junho',
-            'M03' => 'Exigibilidade de caixa',
-            'M04' => 'Artigo 13.º do CIVA ou similar',
-            'M05' => 'Artigo 14.º do CIVA ou similar',
-            'M06' => 'Artigo 15.º do CIVA ou similar',
-            'M07' => 'Artigo 9.º do CIVA ou similar',
-            'M08' => 'IVA - autoliquidação',
-            'M09' => 'IVA - não confere direito a dedução',
-            'M10' => 'IVA - Regime de isenção (Artigo 53.º do CIVA)',
-            'M11' => 'Regime particular do tabaco',
-            'M12' => 'Regime da margem de lucro - Agências de viagens',
-            'M13' => 'Regime da margem de lucro - Bens em segunda mão',
-            'M14' => 'Regime da margem de lucro - Objetos de arte',
-            'M15' => 'Regime da margem de lucro - Objetos de coleção e antiguidades',
-            'M16' => 'Artigo 14.º do RITI ou similar',
-            'M99' => 'Não sujeito; não tributado ou similar',
-        );
+    {   
+        $list = Vendus_Plugin_Api::getTaxExemptions();
         
         if($exemption && isset($list[$exemption])) {
             return $list[$exemption];
@@ -66,10 +48,11 @@ class Vendus_Plugin_Orders
                     return;
                 }
 
-                $order  = new WC_Order($post->ID);
-                $status = $order->get_status();
+                $order       = new WC_Order($post->ID);
+                $status      = $order->get_status();
+                $ignoreCheck = get_option('vendus_plugin_form_config_ignore_check_completed');
 
-                if($status == 'completed') {
+                if($status == 'completed' || $ignoreCheck) {
                     echo '<a href="' . esc_url(admin_url('admin.php?page=vendus_plugin_settings&action=vendus_plugin_action_invoice&id=' . $post->ID)) . '">Emitir Fatura</a>';
                     return;
                 }

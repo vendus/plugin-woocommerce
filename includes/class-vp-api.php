@@ -44,6 +44,15 @@ class Vendus_Plugin_Api
         return array();
     }
 
+    static public function getTaxExemptions()
+    {
+        $result = self::request('taxexemptions', array());
+        if(isset($result['message']) && isset($result['message']['exemptions']) && !empty($result['message']['exemptions'])) {
+            return $result['message']['exemptions'];
+        }
+        return array();
+    }
+
     static public function getPdf($id)
     {
         $params = array(

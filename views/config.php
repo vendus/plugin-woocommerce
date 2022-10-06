@@ -52,6 +52,16 @@
                     </tr>
                     <tr>
                         <th scope="row">
+                            <label for="vendus_plugin_form_config_ignore_check_completed">
+								Ignorar Estado da Encomenda <?php echo wc_help_tip('Ao ativar é possível emitir faturas sem a encomenda estar "Concluída".');?>
+							</label>
+                        </th>
+                        <td>
+                            <input name="vendus_plugin_form_config_ignore_check_completed" type="checkbox" id="vendus_plugin_form_config_ignore_check_completed" value="1" <?php echo $ignoreCheck ? 'checked' : ''?>>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
                             <label for="vendus_plugin_form_config_exemption_law">Tipo de Fatura</label>
                         </th>
                         <td>

@@ -135,6 +135,12 @@ class Vendus_Plugin
                         update_option('vendus_plugin_form_config_invoice_type', sanitize_text_field($_POST['vendus_plugin_form_config_invoice_type']));
                     }
 
+                    if(isset($_POST['vendus_plugin_form_config_ignore_check_completed'])) {
+                        update_option('vendus_plugin_form_config_ignore_check_completed', sanitize_text_field($_POST['vendus_plugin_form_config_ignore_check_completed']));
+                    }else{
+                        update_option('vendus_plugin_form_config_ignore_check_completed', 0);
+					}
+
                     Vendus_Plugin_Utils::notify('Dados atualizados com suceso!', 'success');
                 }
         
@@ -147,12 +153,13 @@ class Vendus_Plugin
                     }
                 }
 
-                $params['apiKey']     = $apiKey;
-                $params['registerId'] = get_option('vendus_plugin_form_config_register');
-                $params['exemption']  = get_option('vendus_plugin_form_config_exemption');
+                $params['apiKey']        = $apiKey;
+                $params['registerId']    = get_option('vendus_plugin_form_config_register');
+                $params['exemption']     = get_option('vendus_plugin_form_config_exemption');
                 $params['exemptionLaw']  = get_option('vendus_plugin_form_config_exemption_law');
                 $params['exemptionList'] = Vendus_Plugin_Orders::getExemptions();
                 $params['invoiceType']   = get_option('vendus_plugin_form_config_invoice_type');
+                $params['ignoreCheck']   = get_option('vendus_plugin_form_config_ignore_check_completed');
                 $params['invoiceList']   = array(
                     'FT' => 'Fatura (FT)',
                     'FR' => 'Fatura Recibo (FR)',
@@ -205,8 +212,8 @@ class Vendus_Plugin
                 
                 $order['date_created']   = $order['date_created']->__toString();
                 $order['date_modified']  = $order['date_modified']->__toString();
-                $order['date_completed'] = $order['date_completed']->__toString();
-                $order['date_paid']      = $order['date_paid'] ? $order['date_paid']->__toString() : '';
+                $order['date_completed'] = $order['date_completed'] ? $order['date_completed']->__toString() : '';
+                $order['date_paid']      = $order['date_paid']      ? $order['date_paid']->__toString()      : '';
                 
                 //$order['meta_data']      = $order['meta_data'][0]->get_data();
                 $metaData = array();
