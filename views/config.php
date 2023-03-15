@@ -11,7 +11,7 @@
                         <label for="vendus_plugin_form_config_api_key">Api Key</label>
                     </th>
                     <td>
-                        <input name="vendus_plugin_config_api_key" type="text" id="vendus_plugin_form_config_api_key" value="<?php echo $apiKey?>" class="regular-text">
+                        <input name="vendus_plugin_config_api_key" type="text" id="vendus_plugin_form_config_api_key" value="<?php echo esc_attr($apiKey)?>" class="regular-text">
                     </td>
                 </tr>
 
@@ -24,7 +24,7 @@
                             <select name="vendus_plugin_form_config_register" id="vendus_plugin_form_config_register" class="regular-text">
                                 <option value=""></option>
                                 <?php foreach($registersList as $register): ?>
-                                    <option value="<?php echo $register['id']?>"><?php echo $register['title']?></option>
+                                    <option value="<?php echo esc_attr($register['id'])?>"><?php echo esc_html($register['title'])?></option>
                                 <?php endforeach;?>
                             </select>
                         </td>
@@ -37,7 +37,7 @@
                             <select name="vendus_plugin_form_config_exemption" id="vendus_plugin_form_config_exemption" class="regular-text">
                                 <option value=""></option>
                                 <?php foreach($exemptionList as $key=>$item): ?>
-                                    <option value="<?php echo $key?>"><?php echo $item?></option>
+                                    <option value="<?php echo esc_attr($key)?>"><?php echo esc_html($item)?></option>
                                 <?php endforeach;?>
                             </select>
                         </td>
@@ -47,7 +47,7 @@
                             <label for="vendus_plugin_form_config_exemption_law">Norma Legal aplicável <?php echo wc_help_tip('Especificação do preceito legal aplicável às isenções de IVA.');?></label>
                         </th>
                         <td>
-                            <input name="vendus_plugin_form_config_exemption_law" type="text" id="vendus_plugin_form_config_exemption_law" value="<?php echo $exemptionLaw?>" class="regular-text">
+                            <input name="vendus_plugin_form_config_exemption_law" type="text" id="vendus_plugin_form_config_exemption_law" value="<?php echo esc_attr($exemptionLaw)?>" class="regular-text">
                         </td>
                     </tr>
                     <tr>
@@ -67,7 +67,7 @@
                         <td>
                             <select name="vendus_plugin_form_config_invoice_type" id="vendus_plugin_form_config_invoice_type" class="regular-text">
                                 <?php foreach($invoiceList as $key=>$item): ?>
-                                    <option value="<?php echo $key?>"><?php echo $item?></option>
+                                    <option value="<?php echo esc_attr($key)?>"><?php echo esc_html($item)?></option>
                                 <?php endforeach;?>
                             </select>
                         </td>
@@ -82,14 +82,14 @@
 
 <script type="text/javascript">
     <?php if(isset($registerId) && !empty($registerId)): ?>
-        document.getElementById('vendus_plugin_form_config_register').value = "<?php echo $registerId?>";
+        document.getElementById('vendus_plugin_form_config_register').value = "<?php echo esc_attr($registerId)?>";
     <?php endif; ?>
 
     <?php if(isset($exemption) && !empty($exemption)): ?>
-        document.getElementById('vendus_plugin_form_config_exemption').value = "<?php echo $exemption?>";
+        document.getElementById('vendus_plugin_form_config_exemption').value = "<?php echo esc_attr($exemption)?>";
     <?php endif; ?>
     
     <?php if(isset($invoiceType) && !empty($invoiceType)): ?>
-        document.getElementById('vendus_plugin_form_config_invoice_type').value = "<?php echo $invoiceType?>";
+        document.getElementById('vendus_plugin_form_config_invoice_type').value = "<?php echo esc_attr($invoiceType)?>";
     <?php endif; ?>
 </script>

@@ -1,7 +1,7 @@
 === Vendus ===
 Contributors: vendus
 Tags: invoicing, orders, billing, invoice
-Tested up to: 5.9.3
+Tested up to: 6.1
 Requires at least: 4.5
 Requires PHP: 5.6
 Stable tag: 2.0

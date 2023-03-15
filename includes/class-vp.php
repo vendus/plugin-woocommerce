@@ -204,7 +204,7 @@ class Vendus_Plugin
                 
                 $redirect = admin_url('edit.php?post_type=shop_order');
                 if(isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER']) {
-                    $redirect = $_SERVER['HTTP_REFERER'];
+                    $redirect = sanitize_url($_SERVER['HTTP_REFERER']);
                 }
 
                 $_order = new WC_Order($id);
@@ -248,7 +248,7 @@ class Vendus_Plugin
                 $invoice = Vendus_Plugin_Api::createInvoice($order);
 
                 if(!$invoice['success']) {
-                    wp_redirect($redirect . '&vp-error=' . urlencode($invoice['message']));
+                    wp_redirect($redirect . '&vp-error=' . sanitize_url($invoice['message']));
                     exit;
                 }
 
@@ -268,10 +268,10 @@ class Vendus_Plugin
 
                 $redirect = admin_url('edit.php?post_type=shop_order');
                 if(isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER']) {
-                    $redirect = $_SERVER['HTTP_REFERER'];
+                    $redirect = sanitize_url($_SERVER['HTTP_REFERER']);
                 }
 
-                $obs      = $_POST['obs'];
+                $obs      = wc_clean($_POST['obs']);
                 $order    = new WC_Order($id);
                 $metaList = $order->get_meta_data();
                 
@@ -286,7 +286,7 @@ class Vendus_Plugin
                 $ncData = Vendus_Plugin_Api::createInvoiceNC($invoiceData['id'], $obs);
 
                 if(!$ncData['success']) {
-                    wp_redirect($redirect . '&vp-error=' . urlencode($invoice['message']));
+                    wp_redirect($redirect . '&vp-error=' . sanitize_url($invoice['message']));
                     exit;
                 }
 
