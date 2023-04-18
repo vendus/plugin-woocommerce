@@ -57,7 +57,17 @@
 							</label>
                         </th>
                         <td>
-                            <input name="vendus_plugin_form_config_ignore_check_completed" type="checkbox" id="vendus_plugin_form_config_ignore_check_completed" value="1" <?php echo $ignoreCheck ? 'checked' : ''?>>
+                            <input name="vendus_plugin_form_config_ignore_check_completed" type="checkbox" id="vendus_plugin_form_config_ignore_check_completed" value="1" <?php echo $ignoreCheck ? 'checked' : ''?> />
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <label for="vendus_plugin_form_config_ignore_notes">
+								Ignorar Notas da Encomenda <?php echo wc_help_tip('Ao ativar as notas da encomenda não vai aparecer nas faturas.');?>
+							</label>
+                        </th>
+                        <td>
+                            <input name="vendus_plugin_form_config_ignore_notes" type="checkbox" id="vendus_plugin_form_config_ignore_notes" value="1" <?php echo $ignoreNotes ? 'checked' : ''?> />
                         </td>
                     </tr>
                     <tr>

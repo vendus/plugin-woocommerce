@@ -135,6 +135,12 @@ class Vendus_Plugin
                         update_option('vendus_plugin_form_config_invoice_type', sanitize_text_field($_POST['vendus_plugin_form_config_invoice_type']));
                     }
 
+                    if(isset($_POST['vendus_plugin_form_config_ignore_notes'])) {
+                        update_option('vendus_plugin_form_config_ignore_notes', sanitize_text_field($_POST['vendus_plugin_form_config_ignore_notes']));
+                    }else{
+                        update_option('vendus_plugin_form_config_ignore_notes', 0);
+					}
+
                     if(isset($_POST['vendus_plugin_form_config_ignore_check_completed'])) {
                         update_option('vendus_plugin_form_config_ignore_check_completed', sanitize_text_field($_POST['vendus_plugin_form_config_ignore_check_completed']));
                     }else{
@@ -158,6 +164,7 @@ class Vendus_Plugin
                 $params['exemption']     = get_option('vendus_plugin_form_config_exemption');
                 $params['exemptionLaw']  = get_option('vendus_plugin_form_config_exemption_law');
                 $params['exemptionList'] = Vendus_Plugin_Orders::getExemptions();
+                $params['ignoreNotes']   = get_option('vendus_plugin_form_config_ignore_notes');
                 $params['invoiceType']   = get_option('vendus_plugin_form_config_invoice_type');
                 $params['ignoreCheck']   = get_option('vendus_plugin_form_config_ignore_check_completed');
                 $params['invoiceList']   = array(

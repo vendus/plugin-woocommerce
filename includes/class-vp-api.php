@@ -14,6 +14,7 @@ class Vendus_Plugin_Api
             'exemption'     => get_option('vendus_plugin_form_config_exemption'),
             'exemption_law' => get_option('vendus_plugin_form_config_exemption_law'),
             'invoice_type'  => get_option('vendus_plugin_form_config_invoice_type'),
+            'ignore_notes'  => get_option('vendus_plugin_form_config_ignore_notes'),
             'version'       => WC_VERSION
         );
         
