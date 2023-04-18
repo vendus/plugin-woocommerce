@@ -23,6 +23,8 @@ services:
             - .:/var/www/html/wp-content/plugins/vendus
         ports:
             - 8080:80
+        extra_hosts:
+            - 'vendus-pt:host-gateway'
         restart: always
         environment:
             - WORDPRESS_DB_HOST=db:3306
